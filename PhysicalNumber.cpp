@@ -270,36 +270,36 @@ using namespace std;
 		}
 	}
 
-	string Unit_to_string(Unit t)
+	string ariel::Unit_to_string(Unit t)
 	{
 		switch (t)
 		{
 		case ariel::M:
-			return "M";
+			return "m";
 			break;
 		case ariel::KM:
-			return "KM";
+			return "Km";
 			break;
 		case ariel::CM:
-			return "CM";
+			return "Cm";
 			break;
 		case ariel::SEC:
-			return "SEC";
+			return "sec";
 			break;
 		case ariel::MIN:
-			return "MIN";
+			return "min";
 			break;
 		case ariel::HOUR:
-			return "HOUR";
+			return "hour";
 			break;
 		case ariel::G:
-			return "G";
+			return "g";
 			break;
 		case ariel::KG:
-			return "KG";
+			return "Kg";
 			break;
 		case ariel::TON:
-			return "TON";
+			return "ton";
 			break;
 		default:
 			return "Problem!";
