@@ -59,7 +59,7 @@ using namespace std;
 	PhysicalNumber ariel::PhysicalNumber::operator-(const PhysicalNumber & other)
 	{
 		PhysicalNumber convert = Convert(other);
-		return PhysicalNumber(convert._size - _size, _type);
+		return PhysicalNumber(_size - convert._size, _type);
 
 	}
 
@@ -265,9 +265,10 @@ using namespace std;
 			}
 			break;
 			default:
-				break;
+			break;
 			}
 		}
+		throw string("You Cant get here!");
 	}
 
 	string ariel::Unit_to_string(Unit t)
