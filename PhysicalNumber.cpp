@@ -72,8 +72,7 @@ using namespace std;
 
 	PhysicalNumber ariel::PhysicalNumber::operator-()
 	{
-		_size = -1 * _size;
-		return *this;
+		return PhysicalNumber((-1 * _size) , _type);
 	}
 
 	bool ariel::PhysicalNumber::operator<(const PhysicalNumber & other)
