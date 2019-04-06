@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Unit.hpp"
-
+#include <iostream>
+#include <string>
 namespace ariel
 {
 
@@ -17,8 +18,8 @@ namespace ariel
 		PhysicalNumber(double size, Unit type);
 		PhysicalNumber();
 		~PhysicalNumber();
-		double getSize();
-		Unit getType();
+		double getSize() const;
+		Unit getType() const;
 		PhysicalNumber operator+(const PhysicalNumber& other);
 		PhysicalNumber operator+=(const PhysicalNumber& other);
 		PhysicalNumber operator+();
@@ -31,14 +32,8 @@ namespace ariel
 		bool operator>=(const PhysicalNumber& other);
 		bool operator==(const PhysicalNumber& other);
 		bool operator!=(const PhysicalNumber& other);
-		friend std::ostream& operator<<(ostream& os, const PhysicalNumber& other)
-		{
-			return (os << other._size << '[' << other._type << ']');
-		}
-		friend std::ostream& operator>>(ostream& os, const PhysicalNumber& other)
-		{
-
-		}
+		friend std::ostream& operator<<(std::ostream& os, const PhysicalNumber& other);
+		friend std::istream& operator>>(istream& input, const PhysicalNumber& other);
 		PhysicalNumber operator++();
 		PhysicalNumber operator--();
 	};

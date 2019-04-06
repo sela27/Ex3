@@ -1,6 +1,7 @@
 #include "PhysicalNumber.hpp"
 #include "Unit.hpp"
 #include <string>
+#include <iostream>
 //#include "pch.h"
 using ariel::PhysicalNumber;
 using ariel::Unit;
@@ -24,12 +25,12 @@ using namespace std;
 	{
 	}
 
-	double ariel::PhysicalNumber::getSize()
+	double ariel::PhysicalNumber::getSize() const
 	{
 		return _size;
 	}
 
-	Unit ariel::PhysicalNumber::getType()
+	Unit ariel::PhysicalNumber::getType() const
 	{
 		return _type;
 	}
@@ -128,6 +129,18 @@ using namespace std;
 		return (os << other.getSize() << '[' << other.getType() << ']');
 	}*/
 
+	std::ostream & ariel::operator<<(std::ostream & os, const PhysicalNumber & other)
+	{
+		return (os << other.getSize() << '[' << Unit_to_string(other.getType()) << ']');
+	}
+
+	std::istream & ariel::operator>>(istream& input, const PhysicalNumber & other)
+	{
+		std::string s(std::istreambuf_iterator<char>(input), {});
+		//double size = stod(&s, s.find('['));
+		return input;
+	}
+
 	PhysicalNumber PhysicalNumber::Convert(const PhysicalNumber& other)
 	{
 		if (_type == other._type)
@@ -137,7 +150,7 @@ using namespace std;
 		else if ((_type < 3 && other._type > 3) || ((_type > 3 && _type < 7) && (other._type < 3 || other._type > 7)) || (_type > 7 && other._type < 7))
 		{
 
-			throw string("Cannot convert " + to_string(_type) + "to " + to_string(other._type));
+			throw string("Units do not match - ["+Unit_to_string(other._type)+ "] cannot be converted to [" + Unit_to_string(_type)+ "]");
 		}
 		else
 		{
@@ -254,6 +267,43 @@ using namespace std;
 			default:
 				break;
 			}
+		}
+	}
+
+	string Unit_to_string(Unit t)
+	{
+		switch (t)
+		{
+		case ariel::M:
+			return "M";
+			break;
+		case ariel::KM:
+			return "KM";
+			break;
+		case ariel::CM:
+			return "CM";
+			break;
+		case ariel::SEC:
+			return "SEC";
+			break;
+		case ariel::MIN:
+			return "MIN";
+			break;
+		case ariel::HOUR:
+			return "HOUR";
+			break;
+		case ariel::G:
+			return "G";
+			break;
+		case ariel::KG:
+			return "KG";
+			break;
+		case ariel::TON:
+			return "TON";
+			break;
+		default:
+			return "Problem!";
+			break;
 		}
 	}
 
