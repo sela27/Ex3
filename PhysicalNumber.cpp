@@ -278,10 +278,10 @@ using namespace std;
 			return "m";
 			break;
 		case ariel::KM:
-			return "Km";
+			return "km";
 			break;
 		case ariel::CM:
-			return "Cm";
+			return "cm";
 			break;
 		case ariel::SEC:
 			return "sec";
@@ -296,7 +296,7 @@ using namespace std;
 			return "g";
 			break;
 		case ariel::KG:
-			return "Kg";
+			return "kg";
 			break;
 		case ariel::TON:
 			return "ton";

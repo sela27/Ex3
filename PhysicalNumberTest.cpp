@@ -23,6 +23,8 @@ int main() {
     PhysicalNumber z(400, Unit::TON);
     PhysicalNumber t(100, Unit::G);
     PhysicalNumber w(500, Unit::SEC);
+    PhysicalNumber f(10, Unit::KM);
+    PhysicalNumber s(1400, Unit::M);
     // BASIC TESTS - DO NOT CHANGE
     PhysicalNumber a(2, Unit::KM);
     PhysicalNumber b(300, Unit::M);
@@ -56,7 +58,7 @@ int main() {
 
     // YOUR TESTS - INSERT AS MANY AS YOU WANT
       .setname("our tests")
-      .CHECK_OUTPUT(x, "1[Cm]")
+      .CHECK_OUTPUT(x, "1[cm]")
       .CHECK_OUTPUT(y, "2[sec]")
       .CHECK_OUTPUT(z, "400[ton]")
       .CHECK_OUTPUT(t, "100[g]")
@@ -77,7 +79,7 @@ int main() {
       .CHECK_THROWS(w+x)
       .CHECK_THROWS(w+z)
       .CHECK_THROWS(w+t)
-      .CHECK_OUTPUT(x + x, "2[Cm]")
+      .CHECK_OUTPUT(x + x, "2[cm]")
       .CHECK_OUTPUT(y + y, "4[sec]")
       .CHECK_OUTPUT(z + z, "800[ton]")
       .CHECK_OUTPUT(t + t, "200[g]")
@@ -88,7 +90,25 @@ int main() {
       .CHECK_OUTPUT(y + d, "1802[sec]")
       .CHECK_OUTPUT(w + d, "2300[sec]")
       .CHECK_EQUAL(z > t, true)
-      
+      .CHECK_OUTPUT(f, "10[km]")
+      .CHECK_OUTPUT(s, "1400[m]")
+      .CHECK_OUTPUT((f+=s), "11.4[km]")
+      .CHECK_OUTPUT(f, "11.4[km]")
+      .CHECK_OUTPUT(--f, "10.4[km]")
+      .CHECK_OUTPUT(f, "10.4[km]")
+      .CHECK_OUTPUT(++f, "11.4[km]")
+      .CHECK_OUTPUT(-s, "-1400[m]")
+      .CHECK_OUTPUT(s, "1400[m]")
+      .CHECK_OUTPUT((f -= s), "10[km]")
+      .CHECK_EQUAL(f > s, true)
+      .CHECK_EQUAL(f < s, false)
+      .CHECK_EQUAL(f >= s, true)
+      .CHECK_EQUAL(f <= s, false)
+      .CHECK_EQUAL(f == s, false)
+      .CHECK_EQUAL(f != s, true)
+
+
+
 
       .print(cout, /*show_grade=*/false);
       grade = testcase.grade();
