@@ -34,8 +34,8 @@ namespace ariel
 		bool operator!=(const PhysicalNumber& other);
 		friend std::ostream& operator<<(std::ostream& os, const PhysicalNumber& other);
 		friend std::istream& operator>>(std::istream& input, PhysicalNumber& other);
-		PhysicalNumber operator++();
-		PhysicalNumber operator--();
+		PhysicalNumber operator++(int);
+		PhysicalNumber operator--(int);
 	};
 
 	std::string Unit_to_string(Unit t);

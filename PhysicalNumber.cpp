@@ -111,13 +111,13 @@ using namespace std;
 		return _size != convert._size;
 	}
 
-	PhysicalNumber ariel::PhysicalNumber::operator++()
+	PhysicalNumber ariel::PhysicalNumber::operator++(int)
 	{
 		_size++;
 		return *this;
 	}
 
-	PhysicalNumber ariel::PhysicalNumber::operator--()
+	PhysicalNumber ariel::PhysicalNumber::operator--(int)
 	{
 		_size--;
 		return *this;
