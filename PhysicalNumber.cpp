@@ -147,6 +147,7 @@ using namespace std;
 		std::string s(std::istreambuf_iterator<char>(input), {});
 		try
 		{
+			cout << s << endl;
 			string Ssize = s.substr(0 , s.find('['));
 			double size = stod(Ssize);
 			string Sunit = s.substr(s.find('[') + 1 , s.find(']') - s.find('[') - 1);
