@@ -145,13 +145,21 @@ using namespace std;
 	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
 	{
 		std::string s(std::istreambuf_iterator<char>(input), {});
-		string Ssize = s.substr(0 , s.find('['));
-		double size = stod(Ssize);
-		string Sunit = s.substr(s.find('[') + 1 , 2);
-		Unit type = string_to_unit(Sunit);
-		other._size = size;
-		other._type = type;
-		return input;
+		try
+		{
+			string Ssize = s.substr(0 , s.find('['));
+			double size = stod(Ssize);
+			string Sunit = s.substr(s.find('[') + 1 , 2);
+			Unit type = string_to_unit(Sunit);
+			other._size = size;
+			other._type = type;
+			return input;
+		}
+		catch(...)
+		{
+			throw std::invalid_argument{"worng string to convert"};
+		}
+			
 	}
 
 	PhysicalNumber PhysicalNumber::Convert(const PhysicalNumber& other)
@@ -342,6 +350,6 @@ using namespace std;
 		else if(s.compare("ton") == 0)
 			return Unit::TON;
 		else
-			throw string("worng string to convert");
+			throw std::invalid_argument{"worng string to convert"};
 	}
 
