@@ -111,16 +111,29 @@ using namespace std;
 		return _size != convert._size;
 	}
 
-	PhysicalNumber ariel::PhysicalNumber::operator++(int)
+	PhysicalNumber ariel::PhysicalNumber::operator++()
 	{
 		_size++;
 		return *this;
 	}
 
-	PhysicalNumber ariel::PhysicalNumber::operator--(int)
+	PhysicalNumber ariel::PhysicalNumber::operator--()
 	{
 		_size--;
 		return *this;
+	}
+	PhysicalNumber ariel::PhysicalNumber::operator++(int)
+	{
+		PhysicalNumber temp = *this;
+		++_size;
+		return temp;
+	}
+
+	PhysicalNumber ariel::PhysicalNumber::operator--(int)
+	{
+		PhysicalNumber temp = *this;
+		--_size;
+		return temp;
 	}
 
 	/*std::ostream& operator<<(ostream& os, PhysicalNumber& other)

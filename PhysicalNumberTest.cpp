@@ -93,9 +93,9 @@ int main() {
       .CHECK_OUTPUT(s, "1400[m]")
       .CHECK_OUTPUT((f+=s), "11.4[km]")
       .CHECK_OUTPUT(f, "11.4[km]")
-      .CHECK_OUTPUT(--f, "10.4[km]")
+      .CHECK_OUTPUT(f--, "11.4[km]")
       .CHECK_OUTPUT(f, "10.4[km]")
-      .CHECK_OUTPUT(++f, "11.4[km]")
+      .CHECK_OUTPUT(f++, "10.4[km]")
       .CHECK_OUTPUT(-s, "-1400[m]")
       .CHECK_OUTPUT(s, "1400[m]")
       .CHECK_OUTPUT((f -= s), "10[km]")
@@ -105,7 +105,8 @@ int main() {
       .CHECK_EQUAL(f <= s, false)
       .CHECK_EQUAL(f == s, false)
       .CHECK_EQUAL(f != s, true)
-
+      .CHECK_OUTPUT(++x , "2[cm]")
+      .CHECK_OUTPUT(--x , "1[cm]")
 
 
 
