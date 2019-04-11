@@ -149,7 +149,7 @@ using namespace std;
 		{
 			string Ssize = s.substr(0 , s.find('['));
 			double size = stod(Ssize);
-			string Sunit = s.substr(s.find('[') + 1 , 2);
+			string Sunit = s.substr(s.find('[') + 1 , s.find(']') - s.find('[') - 1);
 			Unit type = string_to_unit(Sunit);
 			other._size = size;
 			other._type = type;
