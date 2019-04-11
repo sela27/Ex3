@@ -136,10 +136,6 @@ using namespace std;
 		return temp;
 	}
 
-	/*std::ostream& operator<<(ostream& os, PhysicalNumber& other)
-	{
-		return (os << other.getSize() << '[' << other.getType() << ']');
-	}*/
 
 	std::ostream & ariel::operator<<(std::ostream & os, const PhysicalNumber & other)
 	{
@@ -167,7 +163,7 @@ using namespace std;
 		else if ((_type < 3 && other._type > 2) || ((_type > 2 && _type < 6) && (other._type < 3 || other._type > 5)) || (_type > 5 && other._type < 6))
 		{
 
-			throw string("Units do not match - ["+Unit_to_string(other._type)+ "] cannot be converted to [" + Unit_to_string(_type)+ "]");
+			throw std::invalid_argument{ "Units do not match - [" + Unit_to_string(other._type) + "] cannot be converted to [" + Unit_to_string(_type) + "]" };
 		}
 		else
 		{
