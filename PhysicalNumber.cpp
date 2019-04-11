@@ -133,10 +133,15 @@ using namespace std;
 		return (os << other.getSize() << '[' << Unit_to_string(other.getType()) << ']');
 	}
 
-	std::istream & ariel::operator>>(istream& input, const PhysicalNumber & other)
+	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
 	{
 		std::string s(std::istreambuf_iterator<char>(input), {});
-		//double size = stod(&s, s.find('['));
+		string Ssize = s.substr(0 , s.find('['));
+		double size = stod(Ssize);
+		string Sunit = s.substr(s.find('[') + 1 , 2);
+		Unit type = string_to_unit(Sunit);
+		other._size = size;
+		other._type = type;
 		return input;
 	}
 
@@ -146,7 +151,7 @@ using namespace std;
 		{
 			return other;
 		}
-		else if ((_type < 3 && other._type > 3) || ((_type > 3 && _type < 7) && (other._type < 3 || other._type > 7)) || (_type > 7 && other._type < 7))
+		else if ((_type < 3 && other._type > 2) || ((_type > 2 && _type < 6) && (other._type < 3 || other._type > 5)) || (_type > 5 && other._type < 6))
 		{
 
 			throw string("Units do not match - ["+Unit_to_string(other._type)+ "] cannot be converted to [" + Unit_to_string(_type)+ "]");
@@ -305,5 +310,29 @@ using namespace std;
 			return "Problem!";
 			break;
 		}
+	}
+	
+	Unit ariel::string_to_unit(string s)
+	{
+		if(s.compare("m") == 0)
+			return Unit::M;
+		else if(s.compare("km") == 0)
+			return Unit::KM;
+		else if(s.compare("cm") == 0)
+			return Unit::CM;
+		else if(s.compare("sec") == 0)
+			return Unit::SEC;
+		else if(s.compare("min") == 0)
+			return Unit::MIN;
+		else if(s.compare("hour") == 0)
+			return Unit::HOUR;
+		else if(s.compare("g") == 0)
+			return Unit::G;
+		else if(s.compare("kg") == 0)
+			return Unit::KG;
+		else if(s.compare("ton") == 0)
+			return Unit::TON;
+		else
+			throw string("worng string to convert");
 	}
 

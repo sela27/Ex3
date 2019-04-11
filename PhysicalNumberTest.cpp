@@ -86,7 +86,6 @@ int main() {
       .CHECK_OUTPUT(w + w, "1000[sec]")
       .CHECK_OUTPUT(y + w, "502[sec]")
       .CHECK_OUTPUT(w + y, "502[sec]")
-      .CHECK_OUTPUT(t + z, "400000100[g]")
       .CHECK_OUTPUT(y + d, "1802[sec]")
       .CHECK_OUTPUT(w + d, "2300[sec]")
       .CHECK_EQUAL(z > t, true)
