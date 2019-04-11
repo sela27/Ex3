@@ -159,7 +159,9 @@ using namespace std;
 		}
 		catch(...)
 		{
-			throw std::invalid_argument{"worng string to convert"};
+			input.clear(input.rdstate());
+			return input;
+			//throw std::invalid_argument{"worng string to convert"};
 		}
 			
 	}
