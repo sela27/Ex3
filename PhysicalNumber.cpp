@@ -9,426 +9,414 @@ using ariel::Unit;
 using namespace std;
 
 
-	PhysicalNumber::PhysicalNumber(double size, Unit type)
+PhysicalNumber::PhysicalNumber(double size, Unit type)
+{
+	_size = size;
+	_type = type;
+}
+
+PhysicalNumber::PhysicalNumber()
+{
+	_size = 0;
+	_type = Unit::KM;
+}
+
+PhysicalNumber::~PhysicalNumber()
+{
+}
+
+double ariel::PhysicalNumber::getSize() const
+{
+	return _size;
+}
+
+Unit ariel::PhysicalNumber::getType() const
+{
+	return _type;
+}
+
+
+
+PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& other)
+{
+	PhysicalNumber convert = Convert(other);
+	return PhysicalNumber(convert._size + _size, _type);
+
+}
+
+PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber& other)
+{
+	PhysicalNumber convert = Convert(other);
+	_size += convert._size;
+	return *this;
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator+()
+{
+	return *this;
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator-(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return PhysicalNumber(_size - convert._size, _type);
+
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator-=(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	_size -= convert._size;
+	return *this;
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator-()
+{
+	return PhysicalNumber((-1 * _size), _type);
+}
+
+bool ariel::PhysicalNumber::operator<(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size < convert._size;
+}
+
+bool ariel::PhysicalNumber::operator>(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size > convert._size;
+}
+
+bool ariel::PhysicalNumber::operator<=(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size <= convert._size;
+}
+
+bool ariel::PhysicalNumber::operator>=(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size >= convert._size;
+}
+
+bool ariel::PhysicalNumber::operator==(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size == convert._size;
+}
+
+bool ariel::PhysicalNumber::operator!=(const PhysicalNumber & other)
+{
+	PhysicalNumber convert = Convert(other);
+	return _size != convert._size;
+}
+
+PhysicalNumber& ariel::PhysicalNumber::operator++()
+{
+	_size++;
+	return *this;
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator--()
+{
+	_size--;
+	return *this;
+}
+PhysicalNumber ariel::PhysicalNumber::operator++(int)
+{
+	PhysicalNumber temp = *this;
+	++_size;
+	return temp;
+}
+
+PhysicalNumber ariel::PhysicalNumber::operator--(int)
+{
+	PhysicalNumber temp = *this;
+	--_size;
+	return temp;
+}
+
+
+std::ostream & ariel::operator<<(std::ostream & os, const PhysicalNumber & other)
+{
+	return (os << other.getSize() << '[' << Unit_to_string(other.getType()) << ']');
+}
+
+/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+{
+	ios::pos_type startPosition = input.tellg();
+	std::string s(std::istreambuf_iterator<char>(input), {});
+	try
 	{
-		_size = size;
-		_type = type;
+		string Ssize = s.substr(0 , s.find('['));
+		double size = stod(Ssize);
+		string Sunit = s.substr(s.find('[') + 1 , s.find(']') - s.find('[') - 1);
+		Unit type = string_to_unit(Sunit);
+		other._size = size;
+		other._type = type;
+		return input;
+	}
+	catch(...)
+	{
+		auto errorState = input.rdstate();
+		input.clear();
+		input.seekg(startPosition);
+		input.clear(errorState);
+		return input;
+		//throw std::invalid_argument{"worng string to convert"};
 	}
 
-	PhysicalNumber::PhysicalNumber()
+}*/
+
+/*static istream& getAndCheckNextCharIs(istream& input, char expectedChar)
+{
+	char actualChar;
+	input >> actualChar;
+	if (!input) return input;
+
+	if (actualChar != expectedChar)
+		input.setstate(ios::failbit);
+	return input;
+}*/
+
+/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+{
+	double size;
+	char type[4];
+	ios::pos_type startPosition = input.tellg();
+	if ((!(input >> size)) || (!getAndCheckNextCharIs(input, '[')) || (!(input.getline(type ,5 , ']'))))
 	{
-		_size = 0;
-		_type = Unit::KM;
+		auto errorState = input.rdstate();
+		input.clear();
+		input.seekg(startPosition);
+		input.clear(errorState);
 	}
-
-	PhysicalNumber::~PhysicalNumber()
+	else
 	{
-	}
-
-	double ariel::PhysicalNumber::getSize() const
-	{
-		return _size;
-	}
-
-	Unit ariel::PhysicalNumber::getType() const
-	{
-		return _type;
-	}
-
-
-
-	PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return PhysicalNumber(convert._size + _size, _type);
-
-	}
-
-	PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber& other)
-	{
-		PhysicalNumber convert = Convert(other);
-		_size += convert._size;
-		return *this;
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator+()
-	{
-		return *this;
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator-(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return PhysicalNumber(_size - convert._size, _type);
-
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator-=(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		_size -= convert._size;
-		return *this;
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator-()
-	{
-		return PhysicalNumber((-1 * _size) , _type);
-	}
-
-	bool ariel::PhysicalNumber::operator<(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size < convert._size;
-	}
-
-	bool ariel::PhysicalNumber::operator>(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size > convert._size;
-	}
-
-	bool ariel::PhysicalNumber::operator<=(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size <= convert._size;
-	}
-
-	bool ariel::PhysicalNumber::operator>=(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size >= convert._size;
-	}
-
-	bool ariel::PhysicalNumber::operator==(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size == convert._size;
-	}
-
-	bool ariel::PhysicalNumber::operator!=(const PhysicalNumber & other)
-	{
-		PhysicalNumber convert = Convert(other);
-		return _size != convert._size;
-	}
-
-	PhysicalNumber& ariel::PhysicalNumber::operator++()
-	{
-		_size++;
-		return *this;
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator--()
-	{
-		_size--;
-		return *this;
-	}
-	PhysicalNumber ariel::PhysicalNumber::operator++(int)
-	{
-		PhysicalNumber temp = *this;
-		++_size;
-		return temp;
-	}
-
-	PhysicalNumber ariel::PhysicalNumber::operator--(int)
-	{
-		PhysicalNumber temp = *this;
-		--_size;
-		return temp;
-	}
-
-
-	std::ostream & ariel::operator<<(std::ostream & os, const PhysicalNumber & other)
-	{
-		return (os << other.getSize() << '[' << Unit_to_string(other.getType()) << ']');
-	}
-
-	/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
-	{
-		ios::pos_type startPosition = input.tellg();
-		std::string s(std::istreambuf_iterator<char>(input), {});
+		other._size = size;
 		try
 		{
-			string Ssize = s.substr(0 , s.find('['));
-			double size = stod(Ssize);
-			string Sunit = s.substr(s.find('[') + 1 , s.find(']') - s.find('[') - 1);
-			Unit type = string_to_unit(Sunit);
-			other._size = size;
-			other._type = type;
-			return input;
+			other._type = string_to_unit(type);
 		}
-		catch(...)
-		{
-			auto errorState = input.rdstate();
-			input.clear();
-			input.seekg(startPosition);
-			input.clear(errorState);
-			return input;
-			//throw std::invalid_argument{"worng string to convert"};
-		}
-			
-	}*/
-	
-	static istream& getAndCheckNextCharIs(istream& input, char expectedChar) 
-	{
-    		char actualChar;
-    		input >> actualChar;
-    		if (!input) return input;
-
-    		if (actualChar!=expectedChar) 
-        		input.setstate(ios::failbit);
-    		return input;
-	}
-	
-	/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
-	{
-		double size;
-		string type;
-		ios::pos_type startPosition = input.tellg();
-		if ((!(input >> size)) || (!getAndCheckNextCharIs(input,'[')) || (!(input >> type)) || (!(getAndCheckNextCharIs(input, ']'))) )
-		{
-			auto errorState = input.rdstate();
-			input.clear();
-			input.seekg(startPosition);
-			input.clear(errorState);	
-		}
-		else
-		{
-			other._size = size;
-			try
-			{
-				other._type = string_to_unit(type);
-			}
-			catch(...)
-			{
-				auto errorState = input.rdstate();
-				input.clear();
-				input.seekg(startPosition);
-				input.clear(errorState);
-			}
-		}
-		return input;
-	}*/
-	
-	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
-	{
-		double size;
-		char type[4];
-		ios::pos_type startPosition = input.tellg();
-		if ((!(input >> size)) || (!getAndCheckNextCharIs(input, '[')) || (!(input.getline(type ,5 , ']'))))
+		catch (...)
 		{
 			auto errorState = input.rdstate();
 			input.clear();
 			input.seekg(startPosition);
 			input.clear(errorState);
 		}
-		else
-		{
-			other._size = size;
-			try
-			{
-				other._type = string_to_unit(type);
-			}
-			catch (...)
-			{
-				auto errorState = input.rdstate();
-				input.clear();
-				input.seekg(startPosition);
-				input.clear(errorState);
-			}
-		}
-		return input;
 	}
+	return input;
+}*/
 
-
-
-	PhysicalNumber PhysicalNumber::Convert(const PhysicalNumber& other)
+std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+{
+	double size;
+	string type;
+	input >> size >> type;
+	try
 	{
-		if (_type == other._type)
-		{
-			return other;
-		}
-		else if ((_type < 3 && other._type > 2) || ((_type > 2 && _type < 6) && (other._type < 3 || other._type > 5)) || (_type > 5 && other._type < 6))
-		{
+		type = type.substr(1, type.length() - 2);
+		Unit t = string_to_unit(type);
+		other._type = t;
+		other._size = size;
+	}
+	catch (...)
+	{
+		input.setstate(std::ios::badbit);
+	}
+	return input;
+}
 
-			throw std::invalid_argument{ "Units do not match - [" + Unit_to_string(other._type) + "] cannot be converted to [" + Unit_to_string(_type) + "]" };
-		}
-		else
+
+PhysicalNumber PhysicalNumber::Convert(const PhysicalNumber& other)
+{
+	if (_type == other._type)
+	{
+		return other;
+	}
+	else if ((_type < 3 && other._type > 2) || ((_type > 2 && _type < 6) && (other._type < 3 || other._type > 5)) || (_type > 5 && other._type < 6))
+	{
+
+		throw std::invalid_argument{ "Units do not match - [" + Unit_to_string(other._type) + "] cannot be converted to [" + Unit_to_string(_type) + "]" };
+	}
+	else
+	{
+		switch (_type)
 		{
-			switch (_type)
+		case 0:
+		{
+			switch (other._type)
 			{
-			case 0:
-			{
-				switch (other._type)
-				{
-				case 1: return PhysicalNumber(other._size * 1000, _type);
-					break;
-				case 2: return PhysicalNumber(other._size / 100, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 1:
-			{
-				switch (other._type)
-				{
-				case 0: return PhysicalNumber(other._size / 1000, _type);
-					break;
-				case 2: return PhysicalNumber(other._size / 100000, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 2:
-			{
-				switch (other._type)
-				{
-				case 0: return PhysicalNumber(other._size * 100, _type);
-					break;
-				case 1: return PhysicalNumber(other._size * 100000, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 3:
-			{
-				switch (other._type)
-				{
-				case 4: return PhysicalNumber(other._size * 60, _type);
-					break;
-				case 5: return PhysicalNumber(other._size * 3600, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 4:
-			{
-				switch (other._type)
-				{
-				case 3: return PhysicalNumber(other._size / 60, _type);
-					break;
-				case 5: return PhysicalNumber(other._size * 60, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 5:
-			{
-				switch (other._type)
-				{
-				case 3: return PhysicalNumber(other._size / 3600, _type);
-					break;
-				case 4: return PhysicalNumber(other._size / 60, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 6:
-			{
-				switch (other._type)
-				{
-				case 7: return PhysicalNumber(other._size * 1000, _type);
-					break;
-				case 8: return PhysicalNumber(other._size * 1000000, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 7:
-			{
-				switch (other._type)
-				{
-				case 6: return PhysicalNumber(other._size / 1000, _type);
-					break;
-				case 8: return PhysicalNumber(other._size * 1000, _type);
-				default:
-					break;
-				}
-			}
-			break;
-			case 8:
-			{
-				switch (other._type)
-				{
-				case 6: return PhysicalNumber(other._size / 1000000, _type);
-					break;
-				case 7: return PhysicalNumber(other._size / 1000, _type);
-				default:
-					break;
-				}
-			}
-			break;
+			case 1: return PhysicalNumber(other._size * 1000, _type);
+				break;
+			case 2: return PhysicalNumber(other._size / 100, _type);
 			default:
-			break;
+				break;
 			}
 		}
-		throw string("You Cant get here!");
-	}
-
-	string ariel::Unit_to_string(Unit t)
-	{
-		switch (t)
+		break;
+		case 1:
 		{
-		case ariel::M:
-			return "m";
-			break;
-		case ariel::KM:
-			return "km";
-			break;
-		case ariel::CM:
-			return "cm";
-			break;
-		case ariel::SEC:
-			return "sec";
-			break;
-		case ariel::MIN:
-			return "min";
-			break;
-		case ariel::HOUR:
-			return "hour";
-			break;
-		case ariel::G:
-			return "g";
-			break;
-		case ariel::KG:
-			return "kg";
-			break;
-		case ariel::TON:
-			return "ton";
-			break;
+			switch (other._type)
+			{
+			case 0: return PhysicalNumber(other._size / 1000, _type);
+				break;
+			case 2: return PhysicalNumber(other._size / 100000, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 2:
+		{
+			switch (other._type)
+			{
+			case 0: return PhysicalNumber(other._size * 100, _type);
+				break;
+			case 1: return PhysicalNumber(other._size * 100000, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 3:
+		{
+			switch (other._type)
+			{
+			case 4: return PhysicalNumber(other._size * 60, _type);
+				break;
+			case 5: return PhysicalNumber(other._size * 3600, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 4:
+		{
+			switch (other._type)
+			{
+			case 3: return PhysicalNumber(other._size / 60, _type);
+				break;
+			case 5: return PhysicalNumber(other._size * 60, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 5:
+		{
+			switch (other._type)
+			{
+			case 3: return PhysicalNumber(other._size / 3600, _type);
+				break;
+			case 4: return PhysicalNumber(other._size / 60, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 6:
+		{
+			switch (other._type)
+			{
+			case 7: return PhysicalNumber(other._size * 1000, _type);
+				break;
+			case 8: return PhysicalNumber(other._size * 1000000, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 7:
+		{
+			switch (other._type)
+			{
+			case 6: return PhysicalNumber(other._size / 1000, _type);
+				break;
+			case 8: return PhysicalNumber(other._size * 1000, _type);
+			default:
+				break;
+			}
+		}
+		break;
+		case 8:
+		{
+			switch (other._type)
+			{
+			case 6: return PhysicalNumber(other._size / 1000000, _type);
+				break;
+			case 7: return PhysicalNumber(other._size / 1000, _type);
+			default:
+				break;
+			}
+		}
+		break;
 		default:
-			return "Problem!";
 			break;
 		}
 	}
-	
-	Unit ariel::string_to_unit(string s)
+	throw string("You Cant get here!");
+}
+
+string ariel::Unit_to_string(Unit t)
+{
+	switch (t)
 	{
-		if(s.compare("m") == 0)
-			return Unit::M;
-		else if(s.compare("km") == 0)
-			return Unit::KM;
-		else if(s.compare("cm") == 0)
-			return Unit::CM;
-		else if(s.compare("sec") == 0)
-			return Unit::SEC;
-		else if(s.compare("min") == 0)
-			return Unit::MIN;
-		else if(s.compare("hour") == 0)
-			return Unit::HOUR;
-		else if(s.compare("g") == 0)
-			return Unit::G;
-		else if(s.compare("kg") == 0)
-			return Unit::KG;
-		else if(s.compare("ton") == 0)
-			return Unit::TON;
-		else
-			throw std::invalid_argument{"worng string to convert"};
+	case ariel::M:
+		return "m";
+		break;
+	case ariel::KM:
+		return "km";
+		break;
+	case ariel::CM:
+		return "cm";
+		break;
+	case ariel::SEC:
+		return "sec";
+		break;
+	case ariel::MIN:
+		return "min";
+		break;
+	case ariel::HOUR:
+		return "hour";
+		break;
+	case ariel::G:
+		return "g";
+		break;
+	case ariel::KG:
+		return "kg";
+		break;
+	case ariel::TON:
+		return "ton";
+		break;
+	default:
+		return "Problem!";
+		break;
 	}
+}
+
+Unit ariel::string_to_unit(string s)
+{
+	if (s.compare("m") == 0)
+		return Unit::M;
+	else if (s.compare("km") == 0)
+		return Unit::KM;
+	else if (s.compare("cm") == 0)
+		return Unit::CM;
+	else if (s.compare("sec") == 0)
+		return Unit::SEC;
+	else if (s.compare("min") == 0)
+		return Unit::MIN;
+	else if (s.compare("hour") == 0)
+		return Unit::HOUR;
+	else if (s.compare("g") == 0)
+		return Unit::G;
+	else if (s.compare("kg") == 0)
+		return Unit::KG;
+	else if (s.compare("ton") == 0)
+		return Unit::TON;
+	else
+		throw std::invalid_argument{ "worng string to convert" };
+}
 
