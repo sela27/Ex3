@@ -117,7 +117,7 @@ using namespace std;
 		return *this;
 	}
 
-	PhysicalNumber& ariel::PhysicalNumber::operator--()
+	PhysicalNumber ariel::PhysicalNumber::operator--()
 	{
 		_size--;
 		return *this;

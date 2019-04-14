@@ -36,7 +36,7 @@ namespace ariel
 		friend std::istream& operator>>(std::istream& input, PhysicalNumber& other);
 		PhysicalNumber operator++(int);
 		PhysicalNumber operator--(int);
-		PhysicalNumber operator++();
+		PhysicalNumber& operator++();
 		PhysicalNumber operator--();
 	};
 
