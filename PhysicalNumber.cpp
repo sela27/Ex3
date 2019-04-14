@@ -158,8 +158,10 @@ using namespace std;
 		}
 		catch(...)
 		{
+			auto errorState = input.rdstate();
+			input.clear();
 			input.seekg(startPosition);
-			input.clear(input.rdstate());
+			input.clear(errorState);
 			return input;
 			//throw std::invalid_argument{"worng string to convert"};
 		}
