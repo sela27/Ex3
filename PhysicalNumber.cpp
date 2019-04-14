@@ -142,7 +142,7 @@ using namespace std;
 		return (os << other.getSize() << '[' << Unit_to_string(other.getType()) << ']');
 	}
 
-	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+	/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
 	{
 		ios::pos_type startPosition = input.tellg();
 		std::string s(std::istreambuf_iterator<char>(input), {});
@@ -166,7 +166,50 @@ using namespace std;
 			//throw std::invalid_argument{"worng string to convert"};
 		}
 			
+	}*/
+	
+	static istream& getAndCheckNextCharIs(istream& input, char expectedChar) 
+	{
+    		char actualChar;
+    		input >> actualChar;
+    		if (!input) return input;
+
+    		if (actualChar!=expectedChar) 
+        		input.setstate(ios::failbit);
+    		return input;
 	}
+	
+	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+	{
+		double size;
+		string type;
+		ios::pos_type startPosition = input.tellg();
+		if ((!(input >> size)) || (!getAndCheckNextCharIs(input,'[')) || (!(input >> type)) || (!(getAndCheckNextCharIs(input, ']'))) )
+		{
+			auto errorState = input.rdstate();
+			input.clear();
+			input.seekg(startPosition);
+			input.clear(errorState);	
+		}
+		else
+		{
+			other._size = size;
+			try
+			{
+				other._type = string_to_unit(type);
+			}
+			catch(...)
+			{
+				auto errorState = input.rdstate();
+				input.clear();
+				input.seekg(startPosition);
+				input.clear(errorState);
+			}
+		}
+		return input;
+	}
+
+
 
 	PhysicalNumber PhysicalNumber::Convert(const PhysicalNumber& other)
 	{
