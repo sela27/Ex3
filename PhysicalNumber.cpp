@@ -214,7 +214,7 @@ using namespace std;
 		double size;
 		char type[4];
 		ios::pos_type startPosition = input.tellg();
-		if ((!(input >> size)) || (!getAndCheckNextCharIs(input, '[')) || (!(input.getline(type ,3 , ']'))))
+		if ((!(input >> size)) || (!getAndCheckNextCharIs(input, '[')) || (!(input.getline(type ,4 , ']'))))
 		{
 			auto errorState = input.rdstate();
 			input.clear();
