@@ -179,7 +179,7 @@ using namespace std;
     		return input;
 	}
 	
-	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+	/*std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
 	{
 		double size;
 		string type;
@@ -199,6 +199,36 @@ using namespace std;
 				other._type = string_to_unit(type);
 			}
 			catch(...)
+			{
+				auto errorState = input.rdstate();
+				input.clear();
+				input.seekg(startPosition);
+				input.clear(errorState);
+			}
+		}
+		return input;
+	}*/
+	
+	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
+	{
+		double size;
+		char type[4];
+		ios::pos_type startPosition = input.tellg();
+		if ((!(input >> size)) || (!getAndCheckNextCharIs(input, '[')) || (!(input.getline(type ,3 , ']'))))
+		{
+			auto errorState = input.rdstate();
+			input.clear();
+			input.seekg(startPosition);
+			input.clear(errorState);
+		}
+		else
+		{
+			other._size = size;
+			try
+			{
+				other._type = string_to_unit(type);
+			}
+			catch (...)
 			{
 				auto errorState = input.rdstate();
 				input.clear();
