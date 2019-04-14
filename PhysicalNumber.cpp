@@ -144,6 +144,7 @@ using namespace std;
 
 	std::istream & ariel::operator>>(istream& input, PhysicalNumber & other)
 	{
+		ios::pos_type startPosition = input.tellg();
 		std::string s(std::istreambuf_iterator<char>(input), {});
 		try
 		{
@@ -157,6 +158,7 @@ using namespace std;
 		}
 		catch(...)
 		{
+			input.seekg(startPosition);
 			input.clear(input.rdstate());
 			return input;
 			//throw std::invalid_argument{"worng string to convert"};
