@@ -25,6 +25,9 @@ int main() {
     PhysicalNumber w(500, Unit::SEC);
     PhysicalNumber f(10, Unit::KM);
     PhysicalNumber s(1400, Unit::M);
+    PhysicalNumber e(999 , Unit::G);
+    PhysicalNumber o(250 , Unit::G);
+    PhysicalNumber r(2.5 , Unit::TON);
     // BASIC TESTS - DO NOT CHANGE
     PhysicalNumber a(2, Unit::KM);
     PhysicalNumber b(300, Unit::M);
@@ -107,8 +110,17 @@ int main() {
       .CHECK_EQUAL(f != s, true)
       .CHECK_OUTPUT(++x , "2[cm]")
       .CHECK_OUTPUT(--x , "1[cm]")
-
-
+      .CHECK_OUTPUT(e , "999[g]")
+      .CHECK_OUTPUT(e++ , "999[g]")
+      .CHECK_OUTPUT(--e , "999[g]")
+      .CHECK_OK(istringstream("250[g]") >> o)
+      .CHECK_OK(istringstream("2.5[ton]") >> r)
+      .CHECK_EQUAL(r != o, true)
+      .CHECK_EQUAL(r == o, false)
+      .CHECK_EQUAL(r < o, false)
+      .CHECK_EQUAL(r > o, true)
+      .CHECK_EQUAL(r <= o, false)
+      .CHECK_EQUAL(r >= o, true)
 
       .print(cout, /*show_grade=*/false);
       grade = testcase.grade();
